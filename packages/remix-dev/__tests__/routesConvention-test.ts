@@ -1,4 +1,6 @@
-import { createRoutePath } from "../config/routesConvention";
+import * as path from "path";
+
+import { createRoutePath, defineConventionalRoutes } from "../config/routesConvention";
 
 describe("createRoutePath", () => {
   describe("creates proper route paths", () => {
@@ -45,3 +47,12 @@ describe("createRoutePath", () => {
     }
   });
 });
+
+describe("defineConventionalRoutes", () => {
+  it("visits symlinked files and folders", () => {
+    let routes = defineConventionalRoutes(path.join(__dirname, "fixtures/symlink-routes/app"));
+    expect(Object.keys(routes).length).toBe(3);
+    expect(routes["routes/page"].file).toBe("routes/page.tsx")
+    expect(routes["routes/posts/index"].file).toBe("routes/posts/index.tsx")
+  })
+})
